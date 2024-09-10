@@ -1,6 +1,6 @@
 import time
 from criptografia import cifraCesar, cifraAF, cifraAF2
-from analise import forcaBruta, DescriptografacifraCesar, descriptografarCifraAF , descriptografarCifraAF2
+from analise import forcaBrutaAF, forcaBrutaAF2, DescriptografacifraCesar, descriptografarCifraAF , descriptografarCifraAF2
 
 # Funcao principal
 def executar_criptografias(texto, chaves):
@@ -26,6 +26,12 @@ def executar_criptografias(texto, chaves):
         end = time.time()
         tempo_af = end - start
         print(f"Tempo de execucao: {tempo_af:.6f} segundos")
+
+        # Forca Bruta para Cifra AF
+        print("/////// FORcA BRUTA PARA Cifra AF /////////")
+        forcaBrutaAF(texto_criptografado, texto)
+        print("///////////////////////")
+        print()
         
         # Cifra AF2
         print("/////// Cifra AF2 /////////")
@@ -38,7 +44,7 @@ def executar_criptografias(texto, chaves):
 
         # Forca Bruta para Cifra AF2
         print("/////// FORcA BRUTA PARA Cifra AF2 /////////")
-        forcaBruta(texto_criptografado, texto)
+        forcaBrutaAF2(texto_criptografado, texto)
         print("///////////////////////")
         print()
 
@@ -49,7 +55,7 @@ with open(nome_arquivo, 'r') as arquivo:
     texto = arquivo.read()
 
 # Definicao das chaves
-chaves = [90, 123, 6789, 54321, 987652, 4976258, 94257163]
+chaves = [2, 50, 431, 6782, 54328, 987653, 4287561]
 
 # Executar com 7 chaves diferentes e capturar os tempos
 executar_criptografias(texto, chaves)
