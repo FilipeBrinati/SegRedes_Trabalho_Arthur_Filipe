@@ -53,7 +53,8 @@ def descriptografarCifraAF(texto_cifrado, chave):
 
         resultado += novo_caractere
     fim = time.time()
-    print(f"Tempo de execucao descriptografar cifraAF: {fim-inicio:.2f} segundos")
+    #print(f"Tempo de execucao descriptografar cifraAF: {fim-inicio:.2f} segundos")
+    #print(resultado)
 
     return resultado
 
@@ -68,20 +69,20 @@ def descriptografarCifraAF2(texto_cifrado, chave):
 
     for i, caractere in enumerate(texto_cifrado):
         valor_ascii = ord(caractere)
-        
-        # Calcula os índices para dois caracteres da chave
-        indice_chave1 = (i * 2) % tamanho_chave
-        indice_chave2 = (i * 2 + 1) % tamanho_chave
-        
-        if indice_chave2 < tamanho_chave:
-            # Usa dois dígitos da chave para o deslocamento
-            deslocamento = int(chave_str[indice_chave1] + chave_str[indice_chave2])
+
+        if tamanho_chave > 1:
+            # Calcula os índices para dois caracteres da chave
+            indice_chave1 = (i * 2) % tamanho_chave
+            indice_chave2 = (i * 2 + 1) % tamanho_chave
+            
+            if indice_chave2 < tamanho_chave:
+                deslocamento = int(chave_str[indice_chave1] + chave_str[indice_chave2])
+            else:
+                deslocamento = int(chave_str[indice_chave1])  # Usa o último dígito sozinho
         else:
-            # Se a chave é de comprimento ímpar e só há um dígito restante
-            deslocamento = int(chave_str[indice_chave1])  # Usa o último dígito sozinho
+            deslocamento = int(chave_str)  # Para chave de um único dígito
 
         if intervalo_inferior <= valor_ascii <= intervalo_superior:
-            # Subtrai o deslocamento para descriptografar
             novo_valor_ascii = intervalo_inferior + ((valor_ascii - intervalo_inferior - deslocamento) % intervalo_tamanho)
             novo_caractere = chr(novo_valor_ascii)
         else:
@@ -92,9 +93,9 @@ def descriptografarCifraAF2(texto_cifrado, chave):
     #print(f"Tempo de execucao descriptografar cifraAF2: {fim-inicio:.2f} segundos")
     return resultado
 
-def forcaBruta(textoCriptografado, textoAlvo):
+def forcaBrutaAF2(textoCriptografado, textoAlvo):
     inicio = time.time()
-    print("tentando forca bruta...")
+    print("tentando forca bruta com cifra AF2...")
     i = 0
     texto=""
     while(texto!=textoAlvo):
@@ -102,5 +103,22 @@ def forcaBruta(textoCriptografado, textoAlvo):
         i=i+1
     print("chave encontrada:",i-1) 
     fim = time.time()
-    print(f"Tempo de execucao forca bruta: {fim-inicio:.2f} segundos")
+    print(f"Tempo de execucao forca brutacom cifra AF2: {fim-inicio:.6f} segundos")
+
+def forcaBrutaAF(textoCriptografado, textoAlvo):
+    inicio = time.time()
+    print("tentando forca bruta com cifra AF...")
+    i = 0
+    texto=""
+    while texto != textoAlvo:
+        texto = descriptografarCifraAF(textoCriptografado, i)
+        #print(f"Tentativa {i}: {texto}")  # Debug: para ver as tentativas
+        i += 1
     
+    if texto == textoAlvo:
+        print("Chave encontrada:", i-1)
+    else:
+        print("Chave não encontrada dentro do limite de tentativas.")
+
+    fim = time.time()
+    print(f"Tempo de execucao forca bruta com cifra AF: {fim-inicio:.6f} segundos")
