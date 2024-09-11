@@ -50,9 +50,18 @@ def executar_criptografias(texto, chaves):
 
 
 # Caminho do arquivo (no mesmo diretório do script)
-nome_arquivo = 'src/texto.txt'
-with open(nome_arquivo, 'r') as arquivo:
-    texto = arquivo.read()
+nome_arquivo = 'texto.txt'
+try:
+    with open(nome_arquivo, 'r') as arquivo:
+        texto = arquivo.read()
+except FileNotFoundError:
+    print(f"Arquivo '{nome_arquivo}' não encontrado. Tentando caminho alternativo...")
+    nome_arquivo = 'src/texto.txt'
+    try:
+        with open(nome_arquivo, 'r') as arquivo:
+            texto = arquivo.read()
+    except FileNotFoundError:
+        print(f"Arquivo '{nome_arquivo}' também não foi encontrado.")
 
 # Definicao das chaves
 chaves = [2, 50, 431, 6782, 54328, 987653, 4287561]
